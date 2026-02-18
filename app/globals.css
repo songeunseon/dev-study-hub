@@ -1,26 +1,147 @@
 @import "tailwindcss";
+@plugin "../hero.ts";
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  overflow-y: scroll;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  transition: font-family 0.15s ease;
+}
+
+/* ===== Custom Scrollbar ===== */
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--heroui-default-300));
+  border-radius: 10px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--heroui-default-200));
+}
+
+/* ===== Custom Fonts ===== */
+
+@font-face {
+  font-family: "BarunHippy";
+  src: url("/font/나눔손글씨 바른히피.ttf") format("truetype");
+  font-display: swap;
+}
+
+/* ===== Font Themes ===== */
+
+html[data-font="geist"] body,
+html:not([data-font]) body {
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+html[data-font="noto"] body {
+  font-family: var(--font-noto-sans-kr), "Noto Sans KR", Arial, sans-serif;
+}
+
+html[data-font="gothic"] body {
+  font-family: var(--font-gothic-a1), "Gothic A1", Arial, sans-serif;
+}
+
+html[data-font="nanum"] body {
+  font-family: var(--font-nanum-gothic), "Nanum Gothic", Arial, sans-serif;
+}
+
+html[data-font="hippy"] body {
+  font-family: "BarunHippy", Arial, sans-serif;
+}
+
+/* ===== Color Themes ===== */
+
+[data-color-theme="blue"],
+:root:not([data-color-theme]) {
+  --heroui-primary-50: 214 100% 97%;
+  --heroui-primary-100: 214 95% 93%;
+  --heroui-primary-200: 213 97% 87%;
+  --heroui-primary-300: 212 96% 78%;
+  --heroui-primary-400: 213 94% 68%;
+  --heroui-primary-500: 212 100% 47%;
+  --heroui-primary-600: 213 97% 44%;
+  --heroui-primary-700: 215 96% 40%;
+  --heroui-primary-800: 215 88% 35%;
+  --heroui-primary-900: 217 77% 30%;
+  --heroui-primary: 212 100% 47%;
+  --heroui-primary-foreground: 0 0% 100%;
+}
+
+[data-color-theme="violet"] {
+  --heroui-primary-50: 270 100% 98%;
+  --heroui-primary-100: 269 100% 95%;
+  --heroui-primary-200: 269 100% 89%;
+  --heroui-primary-300: 269 97% 80%;
+  --heroui-primary-400: 270 95% 70%;
+  --heroui-primary-500: 271 91% 58%;
+  --heroui-primary-600: 271 81% 50%;
+  --heroui-primary-700: 272 72% 42%;
+  --heroui-primary-800: 273 67% 34%;
+  --heroui-primary-900: 274 66% 27%;
+  --heroui-primary: 271 91% 58%;
+  --heroui-primary-foreground: 0 0% 100%;
+}
+
+[data-color-theme="green"] {
+  --heroui-primary-50: 152 81% 96%;
+  --heroui-primary-100: 149 80% 90%;
+  --heroui-primary-200: 152 76% 80%;
+  --heroui-primary-300: 156 72% 67%;
+  --heroui-primary-400: 158 64% 52%;
+  --heroui-primary-500: 160 84% 39%;
+  --heroui-primary-600: 161 94% 30%;
+  --heroui-primary-700: 163 94% 24%;
+  --heroui-primary-800: 163 88% 20%;
+  --heroui-primary-900: 164 86% 16%;
+  --heroui-primary: 160 84% 39%;
+  --heroui-primary-foreground: 0 0% 100%;
+}
+
+[data-color-theme="orange"] {
+  --heroui-primary-50: 33 100% 96%;
+  --heroui-primary-100: 34 100% 92%;
+  --heroui-primary-200: 32 98% 83%;
+  --heroui-primary-300: 31 97% 72%;
+  --heroui-primary-400: 27 96% 61%;
+  --heroui-primary-500: 25 95% 53%;
+  --heroui-primary-600: 21 90% 48%;
+  --heroui-primary-700: 17 88% 40%;
+  --heroui-primary-800: 15 79% 34%;
+  --heroui-primary-900: 15 75% 28%;
+  --heroui-primary: 25 95% 53%;
+  --heroui-primary-foreground: 0 0% 100%;
+}
+
+[data-color-theme="rose"] {
+  --heroui-primary-50: 356 100% 97%;
+  --heroui-primary-100: 356 100% 95%;
+  --heroui-primary-200: 353 96% 90%;
+  --heroui-primary-300: 353 95% 81%;
+  --heroui-primary-400: 351 95% 71%;
+  --heroui-primary-500: 349 89% 60%;
+  --heroui-primary-600: 347 77% 50%;
+  --heroui-primary-700: 345 83% 41%;
+  --heroui-primary-800: 343 80% 35%;
+  --heroui-primary-900: 342 75% 30%;
+  --heroui-primary: 349 89% 60%;
+  --heroui-primary-foreground: 0 0% 100%;
 }
