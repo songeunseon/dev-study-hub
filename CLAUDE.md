@@ -77,10 +77,17 @@ useEffect(() => {
 
 ## Commands
 ```bash
-npm run dev       # 개발 서버 (Turbopack)
-npm run build     # 프로덕션 빌드
-npm run lint      # ESLint 실행
-npm run format    # Prettier 포맷팅
+bun dev           # 개발 서버 (Turbopack)
+bun run build     # 프로덕션 빌드
+bun start         # 프로덕션 서버 실행
+bun run preview   # 빌드 + 실행 (배포 전 확인)
+bun run lint      # ESLint 검사
+bun run lint:fix  # ESLint 자동 수정
+bun run format    # Prettier 포맷팅
+bun run format:check  # 포맷 검사만 (CI용)
+bun run typecheck # TypeScript 타입 검사
+bun run check     # 전체 검증 (타입+린트+포맷)
+bun run clean     # 빌드 캐시 삭제
 ```
 
 ## Conventions
