@@ -16,14 +16,14 @@
 
 ## Tech Stack
 
-| 기술 | 설명 |
-|------|------|
-| [Next.js](https://nextjs.org/) 16 | App Router, Turbopack |
-| [TypeScript](https://www.typescriptlang.org/) 5 | 타입 안전성 |
-| [HeroUI](https://heroui.com/) | UI 컴포넌트 라이브러리 |
-| [Tailwind CSS](https://tailwindcss.com/) v4 | 유틸리티 CSS |
-| [Firebase](https://firebase.google.com/) | 인증 (Auth) |
-| [next-themes](https://github.com/pacocoursey/next-themes) | 다크모드/테마 |
+| 기술                                                      | 설명                   |
+| --------------------------------------------------------- | ---------------------- |
+| [Next.js](https://nextjs.org/) 16                         | App Router, Turbopack  |
+| [TypeScript](https://www.typescriptlang.org/) 5           | 타입 안전성            |
+| [HeroUI](https://heroui.com/)                             | UI 컴포넌트 라이브러리 |
+| [Tailwind CSS](https://tailwindcss.com/) v4               | 유틸리티 CSS           |
+| [Firebase](https://firebase.google.com/)                  | 인증 (Auth)            |
+| [next-themes](https://github.com/pacocoursey/next-themes) | 다크모드/테마          |
 
 ## Getting Started
 
