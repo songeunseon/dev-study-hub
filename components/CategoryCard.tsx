@@ -1,8 +1,10 @@
 "use client";
 
-import { Card, CardBody } from "@heroui/react";
+import { Card, CardBody, Progress } from "@heroui/react";
 import Link from "next/link";
 import type { StudyCategory } from "@/types";
+import { useStudy } from "@/lib/study";
+import { ROADMAPS } from "@/lib/roadmap";
 
 interface CategoryCardProps {
   label: string;
@@ -141,6 +143,17 @@ const CATEGORY_ICONS: Record<StudyCategory, React.ReactNode> = {
   ),
 };
 
+const CATEGORY_COLORS: Record<
+  StudyCategory,
+  "primary" | "secondary" | "success" | "warning" | "danger"
+> = {
+  frontend: "primary",
+  backend: "secondary",
+  server: "success",
+  network: "warning",
+  git: "danger",
+};
+
 export function CategoryCard({
   label,
   slug,
@@ -148,12 +161,26 @@ export function CategoryCard({
   count = 0,
 }: CategoryCardProps) {
   const style = CATEGORY_STYLES[slug];
+  const { studyLogs } = useStudy();
+
+  const totalSubtopics =
+    ROADMAPS[slug]?.nodes.reduce(
+      (sum, node) => sum + (node.children?.length ?? 0),
+      0,
+    ) ?? 0;
+  const completedSubtopics = studyLogs.filter(
+    (l) => l.category === slug,
+  ).length;
+  const progressPct =
+    totalSubtopics > 0
+      ? Math.round((completedSubtopics / totalSubtopics) * 100)
+      : 0;
 
   return (
     <Link href={`/category/${slug}`} className="group block h-full w-full">
       <Card
         isPressable
-        className={`w-full h-full rounded-2xl border border-divider transition-all ${style.hoverBorder} ${style.hoverShadow}`}
+        className={`w-full h-full rounded-2xl border border-divider transition-all duration-200 ${style.hoverBorder} ${style.hoverShadow} hover:-translate-y-1`}
       >
         <CardBody className="gap-3 p-6">
           <div
@@ -163,7 +190,26 @@ export function CategoryCard({
           </div>
           <h3 className="text-lg font-bold">{label}</h3>
           <p className="text-sm text-default-500">{description}</p>
-          {count > 0 && (
+          {totalSubtopics > 0 && (
+            <div className="mt-1">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] text-default-400">
+                  {completedSubtopics}/{totalSubtopics}
+                </span>
+                <span className="text-[10px] font-medium text-default-500">
+                  {progressPct}%
+                </span>
+              </div>
+              <Progress
+                size="sm"
+                radius="full"
+                value={progressPct}
+                color={CATEGORY_COLORS[slug]}
+                className="h-1.5"
+              />
+            </div>
+          )}
+          {count > 0 && totalSubtopics === 0 && (
             <p className="text-xs text-default-400">{count}개 학습 항목</p>
           )}
         </CardBody>
