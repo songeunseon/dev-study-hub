@@ -1,9 +1,11 @@
 # Dev Study Hub
 
 ## Project Overview
+
 웹 개발 학습 플랫폼. 프론트엔드, 백엔드, 서버, 네트워크, Git 5개 카테고리의 로드맵 기반 학습 + 노트 작성 + 학습 기록 관리 + PDF 내보내기를 제공한다.
 
 ## Tech Stack
+
 - **Framework**: Next.js 16 (App Router, Turbopack)
 - **Language**: TypeScript 5
 - **UI Library**: HeroUI (`@heroui/react`) + Tailwind CSS v4
@@ -14,6 +16,7 @@
 - **PDF Export**: 브라우저 네이티브 print (`lib/export-pdf.ts`)
 
 ## Project Structure
+
 ```
 app/                    # Next.js App Router pages
   category/[slug]/      # 카테고리별 학습 페이지 (로드맵, 노트, 학습기록 탭)
@@ -48,7 +51,9 @@ hero.ts                 # HeroUI 설정
 ## Key Patterns
 
 ### Hydration-safe localStorage
+
 localStorage는 SSR에서 사용 불가. `hydrated` 플래그 패턴 사용:
+
 ```typescript
 const [hydrated, setHydrated] = useState(false);
 useEffect(() => {
@@ -62,7 +67,9 @@ useEffect(() => {
 ```
 
 ### StudyCategory
+
 `"frontend" | "backend" | "server" | "network" | "git"` — 5개 카테고리. 새 카테고리 추가 시 변경 필요 파일:
+
 - `types/index.ts` (타입 + CATEGORIES 배열)
 - `lib/content.ts` (CategoryContent)
 - `lib/roadmap.ts` (RoadmapData)
@@ -72,18 +79,28 @@ useEffect(() => {
 - `components/Sidebar.tsx` (CATEGORY_ICONS)
 
 ### Context 사용
+
 - `useAuth()` — 인증 상태, 로그인/로그아웃/회원가입/탈퇴
 - `useStudy()` — todos, studyLogs, studyNotes + CRUD 메서드
 
 ## Commands
+
 ```bash
-npm run dev       # 개발 서버 (Turbopack)
-npm run build     # 프로덕션 빌드
-npm run lint      # ESLint 실행
-npm run format    # Prettier 포맷팅
+bun dev           # 개발 서버 (Turbopack)
+bun run build     # 프로덕션 빌드
+bun start         # 프로덕션 서버 실행
+bun run preview   # 빌드 + 실행 (배포 전 확인)
+bun run lint      # ESLint 검사
+bun run lint:fix  # ESLint 자동 수정
+bun run format    # Prettier 포맷팅
+bun run format:check  # 포맷 검사만 (CI용)
+bun run typecheck # TypeScript 타입 검사
+bun run check     # 전체 검증 (타입+린트+포맷)
+bun run clean     # 빌드 캐시 삭제
 ```
 
 ## Conventions
+
 - 한국어 UI (모든 텍스트 한국어)
 - HeroUI 컴포넌트 우선 사용 (Button, Card, Modal, Input 등)
 - SVG 아이콘은 인라인 (아이콘 라이브러리 미사용)

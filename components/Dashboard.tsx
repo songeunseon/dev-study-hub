@@ -7,6 +7,8 @@ import { CategoryCard } from "@/components/CategoryCard";
 import { StudyStats } from "@/components/StudyStats";
 import { CATEGORIES, type StudyCategory } from "@/types";
 import { LEARNING_CONTENT } from "@/lib/content";
+import { useStudy } from "@/lib/study";
+import { ROADMAPS } from "@/lib/roadmap";
 
 const CATEGORY_DESC: Record<StudyCategory, string> = {
   frontend: "HTML, CSS, JavaScript, React 등 UI 개발",
@@ -21,6 +23,19 @@ interface DashboardProps {
 }
 
 export function Dashboard({ user }: DashboardProps) {
+  const { studyLogs } = useStudy();
+
+  // Overall progress
+  const totalSubtopics = Object.keys(ROADMAPS).reduce((sum, key) => {
+    const roadmap = ROADMAPS[key];
+    for (const node of roadmap.nodes) sum += node.children?.length ?? 0;
+    return sum;
+  }, 0);
+  const completedSubtopics = studyLogs.length;
+  const overallPct =
+    totalSubtopics > 0
+      ? Math.round((completedSubtopics / totalSubtopics) * 100)
+      : 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -37,11 +52,26 @@ export function Dashboard({ user }: DashboardProps) {
             <h1 className="text-3xl sm:text-4xl font-bold mb-4">
               {user.displayName}님, 환영합니다!
             </h1>
-            <p className="text-primary-foreground/80 text-lg mb-8 leading-relaxed">
+            <p className="text-primary-foreground/80 text-lg mb-6 leading-relaxed">
               학습 계획을 체계적으로 관리하고 성장을 기록해보세요.
               <br className="hidden sm:block" />
               오늘의 학습 목표를 확인하고 시작하세요.
             </p>
+            {/* Progress summary */}
+            <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-xl px-4 py-2">
+                <span className="text-2xl font-bold">{overallPct}%</span>
+                <span className="text-sm text-primary-foreground/70">
+                  전체 진행률
+                </span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-xl px-4 py-2">
+                <span className="text-2xl font-bold">{completedSubtopics}</span>
+                <span className="text-sm text-primary-foreground/70">
+                  / {totalSubtopics} 완료
+                </span>
+              </div>
+            </div>
             <div className="flex gap-4">
               <Link
                 href="/category/frontend"
@@ -97,7 +127,7 @@ export function Dashboard({ user }: DashboardProps) {
         <div className="lg:col-span-5">
           <TodoList />
         </div>
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 flex flex-col gap-4">
           <StudyStats />
         </div>
       </div>

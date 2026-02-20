@@ -23,9 +23,12 @@ import {
   reauthenticateWithPopup,
 } from "firebase/auth";
 import { getFirebaseAuth } from "./firebase";
+import { createUserProfile, getUserProfile } from "./firestore";
+import type { UserRole } from "@/types";
 
 interface AuthContextType {
   user: User | null;
+  userRole: UserRole | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (
@@ -43,6 +46,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -51,8 +55,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
       return;
     }
-    const unsubscribe = onAuthStateChanged(auth, (u) => {
+    const unsubscribe = onAuthStateChanged(auth, async (u) => {
       setUser(u);
+      if (u) {
+        // Check admin by email (works without Firestore)
+        const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+        const isAdmin = !!(adminEmail && u.email === adminEmail);
+
+        // Try Firestore profile, but don't block on failure
+        try {
+          await createUserProfile(u.uid, {
+            email: u.email || "",
+            displayName: u.displayName || "",
+          });
+          const profile = await getUserProfile(u.uid);
+          setUserRole(profile?.role ?? (isAdmin ? "admin" : "user"));
+        } catch {
+          // Firestore unavailable — fallback to email check
+          setUserRole(isAdmin ? "admin" : "user");
+        }
+      } else {
+        setUserRole(null);
+      }
       setLoading(false);
     });
     return unsubscribe;
@@ -121,6 +145,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
+        userRole,
         loading,
         signIn,
         signUp,
