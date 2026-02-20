@@ -1,15 +1,20 @@
 {
   "name": "dev-study-hub",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "preview": "next build && next start",
     "lint": "eslint .",
-    "eslint": "eslint .",
-    "format": "prettier --write \"app/**/*.{ts,tsx}\" \"components/**/*.{ts,tsx}\" \"lib/**/*.{ts,tsx}\" \"types/**/*.ts\""
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,mjs,json,md}\"",
+    "typecheck": "tsc --noEmit",
+    "check": "tsc --noEmit && eslint . && prettier --check \"**/*.{ts,tsx,js,mjs,json,md}\"",
+    "clean": "rm -rf .next out"
   },
   "dependencies": {
     "@heroui/react": "^2.8.9",

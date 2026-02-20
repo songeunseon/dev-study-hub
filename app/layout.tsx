@@ -8,7 +8,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
-import { Sidebar } from "@/components/Sidebar";
+import { AppShell } from "@/components/AppShell";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,12 +54,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${notoSansKR.variable} ${gothicA1.variable} ${nanumGothic.variable} antialiased`}
       >
         <Providers>
-          <div className="min-h-screen bg-background text-foreground">
-            <Sidebar />
-            <main className="lg:ml-64 min-h-screen transition-[margin] duration-300">
-              {children}
-            </main>
-          </div>
+          <AppShell>{children}</AppShell>
         </Providers>
       </body>
     </html>

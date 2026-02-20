@@ -5,11 +5,23 @@ export type StudyCategory =
   | "network"
   | "git";
 
+export type UserRole = "user" | "admin";
+
 export interface UserProfile {
   uid: string;
   displayName: string;
   email: string;
-  createdAt: Date;
+  role: UserRole;
+  createdAt: string;
+  lastLoginAt: string;
+}
+
+export interface StudyLog {
+  id: string;
+  nodeTitle: string;
+  subtopicTitle: string;
+  category: StudyCategory;
+  completedAt: string;
 }
 
 export type TodoPriority = "high" | "medium" | "low";
